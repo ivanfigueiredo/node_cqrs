@@ -29,11 +29,12 @@ export class ProductVariationService {
 
   createdProductVariation(productVariation: ProductVariations[]): void {
     const event = new AddedProductVariationsEvent(productVariation);
-    productVariation[0].register(
+
+    productVariation[0].publish(
       AddedProductVariationsEvent.name,
       this.addedProductVariationsSubscriptions,
+      event,
     );
-    productVariation[0].notify(event);
   }
 
   updatedReadDatabase(
@@ -45,11 +46,10 @@ export class ProductVariationService {
       product,
     );
 
-    product.register(
+    product.publish(
       UpdatedProductDatabaseReadEvent.name,
       this.updatedProductVariationDatabaseReadSubscriptions,
+      event,
     );
-
-    product.notify(event);
   }
 }

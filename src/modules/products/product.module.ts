@@ -25,6 +25,7 @@ import UpdatedProductVariationDatabaseReadSubscriptions from '../product-variati
 import UpdatedProductDatabaseReadSubscriptions from './domain/subscriptions/updated-reading-banks.subcriptions';
 import { ProductVariationService } from '../product-variation/domain/product-variation.service';
 import { ProductVariationsMongoDatabase } from '../product-variation/infra/product-variations.mongo.database';
+import EventDispatcher from '../@shared/domain/events/event-dispatcher';
 
 @Module({
   imports: [
@@ -43,6 +44,10 @@ import { ProductVariationsMongoDatabase } from '../product-variation/infra/produ
   providers: [
     AddedProductVariationsSubscriptions,
     UpdatedProductDatabaseReadSubscriptions,
+    {
+      provide: 'UpdatedProductDatabaseReadSubscriptions',
+      useClass: UpdatedProductDatabaseReadSubscriptions,
+    },
     UpdatedProductVariationDatabaseReadSubscriptions,
     ProductVariationsPostgresDatabase,
     ProductVariationsMongoDatabase,
@@ -54,6 +59,10 @@ import { ProductVariationsMongoDatabase } from '../product-variation/infra/produ
     ProductVariationService,
     ProductMapper,
     ApplicationService,
+    {
+      provide: 'EventDispatcher',
+      useClass: EventDispatcher,
+    },
   ],
   controllers: [ProductController],
 })

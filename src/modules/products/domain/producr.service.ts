@@ -16,6 +16,7 @@ export class ProductService {
     @Inject(UpdatedProductDatabaseReadSubscriptions)
     private readonly updatedProductDatabaseReadSubscriptions: UpdatedProductDatabaseReadSubscriptions,
   ) {}
+
   createProduct(dto: CreateProductDto): Product {
     return Product.create(dto);
   }
@@ -38,11 +39,10 @@ export class ProductService {
       product,
     );
 
-    product.register(
+    product.publish(
       UpdatedProductDatabaseReadEvent.name,
       this.updatedProductDatabaseReadSubscriptions,
+      event,
     );
-
-    product.notify(event);
   }
 }
